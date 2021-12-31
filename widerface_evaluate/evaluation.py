@@ -244,9 +244,8 @@ def evaluation(pred, gt_path, iou_thresh=0.5):
             pbar.set_description('Processing {}'.format(settings[setting_id]))
             event_name = str(event_list[i][0][0])
             img_list = file_list[i][0]
-            pred_list = pred[event_name]
+            pred_list = pred['# '+event_name]
             sub_gt_list = gt_list[i][0]
-            # img_pr_info_list = np.zeros((len(img_list), thresh_num, 2))
             gt_bbx_list = facebox_list[i][0]
 
             for j in range(len(img_list)):

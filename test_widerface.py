@@ -20,7 +20,7 @@ parser.add_argument('--network', default='resnet50', help='Backbone network mobi
 parser.add_argument('--origin_size', default=True, type=str, help='Whether use origin image size to evaluate')
 parser.add_argument('--save_folder', default='./widerface_evaluate/widerface_txt/', type=str, help='Dir to save txt results')
 parser.add_argument('--cpu', action="store_true", default=False, help='Use cpu inference')
-parser.add_argument('--dataset_folder', default='./data/widerface/val/images/', type=str, help='dataset path')
+parser.add_argument('--dataset_folder', default='./data/widerface/va/images/', type=str, help='dataset path')
 parser.add_argument('--confidence_threshold', default=0.02, type=float, help='confidence_threshold')
 parser.add_argument('--top_k', default=5000, type=int, help='top_k')
 parser.add_argument('--nms_threshold', default=0.4, type=float, help='nms_threshold')
@@ -89,14 +89,16 @@ if __name__ == '__main__':
     testset_list = args.dataset_folder[:-7] + "wider_val.txt"
 
     with open(testset_list, 'r') as fr:
-        test_dataset = fr.read().split()
+        test_dataset = fr.read().split('\n')
     num_images = len(test_dataset)
 
     _t = {'forward_pass': Timer(), 'misc': Timer()}
 
     # testing begin
     for i, img_name in enumerate(test_dataset):
-        image_path = testset_folder + img_name
+        image_path = testset_folder + img_name[2:]
+        if not image_path.endswith('.jpg'):
+            continue
         img_raw = cv2.imread(image_path, cv2.IMREAD_COLOR)
         img = np.float32(img_raw)
 
